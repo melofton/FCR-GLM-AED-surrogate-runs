@@ -1,6 +1,5 @@
-
 &aed_models
-   models =
+   models = 
    'aed_sedflux',
    'aed_tracer',
    'aed_noncohesive',
@@ -19,8 +18,7 @@
 &aed_sed_const2d
    n_zones = 4
    active_zones = 1, 2, 3, 4
-   Fsed_oxy = -30.33179875153638, -18.33995016351665, -11.27437907196032, -12.51679495174718
-   !Fsed_oxy = -29.29916397869219, -21.66869075617110, -16.39155735828627, -10.90665072320945
+   Fsed_oxy = -44,-10, -10, -10
    !Fsed_oxy = -32.76435121, -5.203754493, -0.181529858
    Fsed_ch4 = 15, 15, 15, 232.6331575
    Fsed_amm =  2.848790019, 1.0, 1.0, 1.0 !2.848790019, 1.7, 0.5, 1.59739687  !1,0.1,1
@@ -60,8 +58,8 @@
 &aed_oxygen
    oxy_initial = 225
    Fsed_oxy = -10
-   Ksed_oxy = 33.70992183856151
-   theta_sed_oxy = 1.104420727921303
+   Ksed_oxy = 25
+   theta_sed_oxy = 1.08
    Fsed_oxy_variable = 'SDF_Fsed_oxy'
    oxy_min = 0
    oxy_max = 500
@@ -132,7 +130,6 @@
    Fsed_nit = -0.05
    Fsed_amm_variable = 'SDF_Fsed_amm'
    Fsed_nit_variable = 'SDF_Fsed_nit'
-   Fsed_nit_model = 0
 /
 &aed_phosphorus
    frp_initial = 0.05
@@ -161,7 +158,7 @@
    donr_initial = 9
    dopr_initial = 0.15
    cpom_initial = 0
-   Rdom_minerl = 0.013
+   Rdom_minerl = 0.01348416
    Rpoc_hydrol = 0.001
    Rpon_hydrol = 0.001
    Rpop_hydrol = 1e-04
@@ -210,8 +207,8 @@
 /
 &aed_phytoplankton
    num_phytos = 3
-   the_phytos = 1, 2, 3
-   settling = 1, 1, 1
+   the_phytos = 1,2,3
+   settling = 2,2,2
    do_mpb = 0
    p_excretion_target_variable = 'OGM_dop'
    n_excretion_target_variable = 'OGM_don'
@@ -227,9 +224,7 @@
    si_uptake_target_variable = 'SIL_rsi'
    do_uptake_target_variable = 'OXY_oxy'
    c_uptake_target_variable = 'CAR_dic'
-   !dbase = 'aed/aed2_phyto_pars_28April2022_constant.nml'
-   !dbase = 'aed/aed2_phyto_pars_20April2022_constant.nml'
-   dbase = 'aed/aed2_phyto_pars_27NOV23_MEL.nml'
+   dbase = 'aed/aed2_phyto_pars_24MAY24_MEL.nml'
    diag_level = 10
    min_rho = 900
    max_rho = 1200

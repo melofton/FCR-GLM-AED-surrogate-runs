@@ -1,6 +1,6 @@
 # Title: Assemble Surrogate Dataset
 # Author: Mary Lofton
-# Date: 06NOV23
+# Date: 11JUL24
 
 # Purpose: Create a dataset for Bobby's students to run with for surrogate development
 
@@ -10,7 +10,7 @@
 # variable, prediction, observation
 
 # load packages ----
-source("./R-scripts/install.R")
+source("./Scripts/install.R")
 
 library(tidyverse)
 library(lubridate)
@@ -82,19 +82,9 @@ colnames(param_values) <- c("R_growth_hot","R_growth_cold","R_growth_Nfixer",
                             "K_N_hot","K_N_cold","K_N_Nfixer",
                             "K_P_hot","K_P_cold","K_P_Nfixer")
 
-# # Plotting code
-# ggplot(data = param_values, aes(x = R_growth_cyano, y = w_p_cyano))+
-#   geom_point()+
-#   theme_bw()
-# ggplot(data = param_values, aes(x = R_growth_green, y = w_p_green))+
-#   geom_point()+
-#   theme_bw()
-# ggplot(data = param_values, aes(x = R_growth_diatom, y = w_p_diatom))+
-#   geom_point()+
-#   theme_bw()
 
 # set nml filepath
-nml_file <- file.path('./aed/aed2_phyto_pars_27NOV23_MEL.nml')
+nml_file <- file.path('./aed/aed2_phyto_pars_24MAY24_MEL.nml')
 
 # set file location of output
 nc_file <- file.path('./output/output.nc') 
@@ -132,22 +122,23 @@ start_nml <- glmtools::read_nml(nml_file = nml_file)
   write_path <- nml_file
   
   # write permuted nml to file
-  glmtools::write_nml(new_nml1, file = write_path)
+  glmtools::write_nml(new_nml6, file = write_path)
   
   # run GLM-AED using GLM3r
   GLM3r::run_glm()
 
   # pull variable of interest from model output
-  var <- glmtools::get_var(nc_file, var_name = "PHY_tchla", reference="surface", z_out=1.6)
+  var <- glmtools::get_var(nc_file, var_name = "PHY_tchla", reference="surface", z_out=1.6) %>%
+    filter(hour(DateTime) == 12)
   
   # pull parameters from model output
-  R_growth <- new_nml1$phyto_data$`pd%R_growth`
-  w_p <- new_nml1$phyto_data$`pd%w_p`
-  I_K <- new_nml1$phyto_data$`pd%w_p`
-  R_resp <- new_nml1$phyto_data$`pd%w_p`
-  KePHY <- new_nml1$phyto_data$`pd%w_p`
-  K_N <- new_nml1$phyto_data$`pd%w_p`
-  K_P <- new_nml1$phyto_data$`pd%w_p`
+  R_growth <- new_nml6$phyto_data$`pd%R_growth`
+  w_p <- new_nml6$phyto_data$`pd%w_p`
+  I_K <- new_nml6$phyto_data$`pd%I_K`
+  R_resp <- new_nml6$phyto_data$`pd%R_resp`
+  KePHY <- new_nml6$phyto_data$`pd%KePHY`
+  K_N <- new_nml6$phyto_data$`pd%K_N`
+  K_P <- new_nml6$phyto_data$`pd%K_P`
   
   # assemble dataframe for that model run
   temp <- data.frame(R_growth_hot = R_growth[1],
@@ -175,8 +166,7 @@ start_nml <- glmtools::read_nml(nml_file = nml_file)
                      datetime = var$DateTime,
                      variable = "PHY_tchla_1.6",
                      prediction = var$PHY_tchla_1.6)
-  # temp1 <- left_join(temp, final_factors, by = "datetime")
-  
+
   # make sure you reset nml
   glmtools::write_nml(start_nml, file = nml_file)
   
