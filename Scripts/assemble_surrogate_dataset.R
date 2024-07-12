@@ -125,8 +125,7 @@ start_nml <- glmtools::read_nml(nml_file = nml_file)
   GLM3r::run_glm()
 
   # pull variable of interest from model output
-  var <- glmtools::get_var(nc_file, var_name = "PHY_tchla", reference="surface", z_out=1.6) %>%
-    filter(hour(DateTime) == 12)
+  var <- glmtools::get_var(nc_file, var_name = "PHY_tchla", reference="surface", z_out=1.6) 
   
   # pull parameters from model output
   R_growth <- new_nml6$phyto_data$`pd%R_growth`
@@ -168,15 +167,17 @@ start_nml <- glmtools::read_nml(nml_file = nml_file)
   glmtools::write_nml(start_nml, file = nml_file)
   
   # bind to other model runs
-  if(j == 1){
-    final <- temp
-  } else {
-    final <- bind_rows(final, temp)
-  }
+  final <- temp
+  # if(j == 1){
+  #   final <- temp
+  # } else {
+  #   final <- bind_rows(final, temp)
+  # }
+  
+  write.csv(final, file = paste0("/home/melofton/FCR-GLM-AED-surrogate-runs/Output/model_runs_surrogate_",j,".csv"),row.names = FALSE)
 
     }
 
-write.csv(final, file = "./model_runs_surrogate.csv",row.names = FALSE)
 
 
 
