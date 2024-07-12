@@ -10,11 +10,8 @@
 # variable, prediction, observation
 
 # load packages ----
-source("./Scripts/install.R")
-
 library(tidyverse)
 library(lubridate)
-library(lhs)
 library(glmtools)
 library(GLM3r)
 
