@@ -9,7 +9,7 @@ library(tidyverse)
 library(lubridate)
 
 # rowbind model runs
-runs <- list.files("./Output", full.names = TRUE)
+runs <- list.files("./Output", full.names = TRUE)[1:1000]
 dat2 <- map_df(runs, read_csv) 
 
 # plot model runs according to value of some parameter
@@ -24,13 +24,17 @@ ggsave(plot = last_plot(), filename = "./Plots/chla_vs_R_growth_Nfixer.png", dev
 # read in observation dataset
 obs <- read_csv("./Data/EXOChla.csv") %>%
   filter(Depth == 1.6) %>%
-  rename(observed = PHY_TCHLA) %>%
+  rename(observed = PHY_TCHLA,
+         datetime = DateTime) %>%
+  mutate(variable = "PHY_tchla_1.6") %>%
   select(-Depth)
 write.csv(obs, file = "./Output/surrogate-observations_12JUL24.csv", row.names = FALSE)
 
 # write final dataset to file
 final <- dat2 %>%
+  filter(hour(datetime) == 00) %>%
   mutate(datetime = date(datetime)) %>%
-  filter(datetime %in% obs$DateTime)
-write.csv(final, file = "./Output/surrogate-GLM-AED-runs_12JUL24.csv",row.names = FALSE)
+  filter(datetime %in% obs$datetime)
+write.csv(final, file = "./Output/surrogate-GLM-AED-runs_14AUG24.csv",row.names = FALSE)
+
 
